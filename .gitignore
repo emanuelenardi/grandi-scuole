@@ -4,6 +4,8 @@
 *.log
 *.toc
 *.bbl
+*.blg
+*.out
 
 ## Build tool auxiliary files:
 *.fdb_latexmk
@@ -15,9 +17,6 @@
 # minted
 _minted*
 *.pyg
-
-# cartella dei codici
-codes/
 
 # note sparse
 notes/

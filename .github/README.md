@@ -4,13 +4,11 @@
 
 Nell'aprile del 2019 ho iniziato ad insegnare come tutor di informatica.
 
-## Consultazione
+## Per gli studendi
 
-Di seguito è possibile consultare il diario e gli appunti delle lezioni:
+* [Dispensa](https://github.com/emanuelenardi/grandi-scuole/raw/master/dispensa.pdf)
+* [Codici](https://github.com/emanuelenardi/grandi-scuole/tree/master/codes)
 
-* [diario]()
-* [appunti]()
+## Per il centro studi
 
-## Licenza
-
-Queste opere sono rilasciate sono licenza 
+* [Agenda](https://github.com/emanuelenardi/grandi-scuole/raw/master/agenda.pdf)
