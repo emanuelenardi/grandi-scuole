@@ -18,8 +18,13 @@
 _minted*
 *.pyg
 
-# note sparse
+# materiale sensibile
+images/
 notes/
+rseba/
 
 # file sorgenti
 *.tex
+
+# file java compilati
+*.class

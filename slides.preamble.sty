@@ -1,0 +1,70 @@
+\usepackage{comment}
+\usepackage{xparse}
+
+% NOTE definizione di nomi di linugaggi di programmazione
+\NewDocumentCommand{\Cpp}{}{C\texttt{++}}
+\NewDocumentCommand{\Java}{}{\textbf{Java}}
+\NewDocumentCommand{\Javalogo}{}{%
+	\raisebox{-4pt}{%
+		\includegraphics[width=.10\textwidth]{java-logo.png}%
+	}%
+}
+
+\usepackage{microtype}
+\usepackage[main=italian, english]{babel}
+\usepackage[useregional]{datetime2}
+
+% NOTE per i listati di codice
+\usepackage[newfloat, cachedir=_minted-cache]{minted}
+\usemintedstyle{manni}
+
+% NOTE opzioni globali per il pacchetto minted
+\setminted{
+	,texcomments
+	,mathescape
+	,breaklines  = true
+	,frame       = lines
+	,fontsize    = \normalsize
+	,fontseries  = bold
+	,numberblanklines = false
+}
+
+% NOTE opzioni per l'ambiente del linguaggio java
+\setminted[java]{
+	,linenos = false
+	,tabsize = 4
+}
+
+% NOTE opzioni per in codice in linea dei linguaggi
+\newmintedfile[javafile]{java}{frame=none}
+
+\usepackage{graphicx}
+\graphicspath{%
+	{./assets/images/}%
+}
+
+\usepackage{tikz}
+
+% NOTE simbolo per riferimento a siti e/o materiali esterni
+\newcommand\ExternalLink{
+	\tikz[x = 1.2ex, y = 1.2ex, baseline = -0.05ex]{
+		\begin{scope}[x = 1ex, y = 1ex]
+			\clip (-0.1,-0.1) --++ (-0, 1.2) --++ (0.6, 0) --++ (0, -0.6) --++ (0.6, 0) --++ (0, -1);
+			\path[draw, line width = 0.5, rounded corners = 0.5] (0,0) rectangle (1,1);
+		\end{scope}
+		\path[draw, line width = 0.5] (0.5, 0.5) -- (1, 1);
+		\path[draw, line width = 0.5] (0.6, 1) -- (1, 1) -- (1, 0.6);
+	}
+}
+
+\usepackage{fontspec}
+\setmainfont{Lato}
+
+\usepackage{hyperref}
+
+% NOTE mantiene il riferimento al materiale esterno
+\NewDocumentCommand{\source}{mm}{%
+	\begin{flushright}
+	-- \href{#2}{#1{\ExternalLink}}
+	\end{flushright}
+}
