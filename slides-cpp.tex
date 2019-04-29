@@ -1,0 +1,38 @@
+\documentclass[aspectratio=169]{beamer}
+\usecolortheme{beaver}
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage[main=italian, english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{comment}
+\usepackage{pdfpages}
+
+\usepackage{tikz}
+\usepackage{pgfpages}
+\pgfpagesuselayout{8 on 1}[a4paper, border shrink=5mm]
+\setbeamertemplate{background canvas}{
+	\tikz \draw (current page.north west) rectangle (current page.south east);
+}
+
+% arara: pdflatex: { shell: yes }
+% arara: latexmk: { clean: partial }
+% arara: clean: { extensions: [nav, snm] }
+\begin{document}
+\setbeamercolor{background canvas}{bg=}
+
+\includepdf[pages={4-7, 11-12}]{assets/rseba/00_PRESENTAZIONE_HANDOUTS.pdf}
+
+\includepdf[pages={2-3, 6, 8-16, 17-19}]{assets/rseba/01_CONCETTI-ELEMENTARI_HANDOUTS.pdf}
+
+\includepdf[pages={2-5, 6-11, 16-19, 27-39, 41-42, 44-45, 47-57}]{assets/rseba/02_VARIABILI-COSTANTI-TIPI_HANDOUTS.pdf}
+
+\includepdf[pages={2-9, 11-12, 14, 17, 19-20, 27-31}]{assets/rseba/03_ISTRUZIONI_HANDOUTS.pdf}
+
+\begin{comment}
+\inlcudepdf[pages={}]{rseba/}
+\includepdf[pages={2-9, 11-19, 21-23, 25, 28, 30-33, 35, 37-39, 41}]{rseba/05_FUNZIONI_HANDOUTS.pdf}
+\end{comment}
+
+\end{document}

@@ -1,0 +1,262 @@
+\documentclass{tufte-book}
+\usepackage{comment}
+\usepackage{xparse}
+
+\usepackage[main=italian, english]{babel}
+\usepackage[
+	calc,
+	useregional,
+	showdow,
+	showseconds = false,
+	% ,timesep     = {.}
+]{datetime2}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{
+	,mparhack
+	,marginfix
+}
+
+\usepackage[inline]{enumitem}
+\usepackage{amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=\(\square\)}
+\NewDocumentCommand{\cmark}{}{\ding{51}}%
+\NewDocumentCommand{\xmark}{}{\ding{55}}%
+\NewDocumentCommand{\done}{}{\rlap{\(\square\)}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
+\hspace{-2.5pt}}
+\NewDocumentCommand{\notdone}{}{\rlap{\(\square\)}{\large\hspace{1pt}\xmark}}
+
+\usepackage{pifont}
+\NewDocumentCommand{\Presente}{}{\textcolor{ForestGreen}{\cmark}}
+\NewDocumentCommand{\Assente}{}{\textcolor{Red}{\xmark}}
+\NewDocumentCommand{\Festa}{}{\textcolor{gray}{\(\circ\)}}
+\NewDocumentCommand{\Null}{}{-}
+
+% https://tex.stackexchange.com/questions/477319/
+\DTMnewdatestyle{giorno-numero}{%
+	\renewcommand{\DTMdisplaydate}[4]{%
+		\DTMweekdayname{##4}\space% weekday
+		\number##3%                 day
+	}%
+	\renewcommand{\DTMDisplaydate}{\DTMdisplaydate}%
+}
+
+\DTMnewdatestyle{numero}{%
+	\renewcommand{\DTMdisplaydate}[4]{%
+		\number##3%                 day
+	}%
+	\renewcommand{\DTMDisplaydate}{\DTMdisplaydate}%
+}
+
+\NewDocumentCommand{\Giorno}{m}{%
+	\DTMsetdatestyle{giorno-numero}%
+	\DTMdate{#1}%
+}
+
+\NewDocumentCommand{\Numero}{m}{%
+	\DTMsetdatestyle{numero}%
+	\DTMdate{#1}%
+}
+
+\NewDocumentEnvironment{lezione}{mmmm}{
+	\subsection{\textbf{#4}}%
+	\marginnote{\Giorno{#1}}%
+	\marginnote{\DTMtime{#2} -- \DTMtime{#3}}%
+}{
+	\vspace{0.5cm}
+}
+
+\NewDocumentCommand{\studente}{m}{%
+	\paragraph{#1}%
+}
+
+\NewDocumentEnvironment{compiti}{}{%
+	\begin{todolist}\footnotesize
+}{
+	\end{todolist}
+}
+
+\NewDocumentCommand{\Cpp}{}{C\texttt{++}}
+
+\AtBeginDocument{\maketitle}
+% \AtEndDocument{Continua\dots}
+
+\title{Diario delle lezioni}
+\author{Emanuele Nardi}
+\date{Aggiornato al \today}
+
+% arara: pdflatex: { draft: yes }
+% arara: pdflatex: { synctex: yes }
+% arara: latexmk: { clean: partial }
+% arara: clean: { extensions: [bbl, synctex.gz] }
+\begin{document}
+
+\section{Introduzione}
+
+All'inizio di ogni mese è presente una tabella riassuntiva delle presenze dello studente.
+
+\medskip
+Per ogni lezione sono espresse in maniera sintetica i punti salienti di ogni lezione, per approfondire gli argomenti trattati leggere la dispensa delle lezioni.
+
+\medskip
+Il diario dell'insegnante è un diario dove l'insegnante registra lo svolgimento della lezione ed esprime le sue riflessioni su di essa. \'{E} utilizzato come \emph{strumento di sviluppo}. Leggendola il genitore può farsi un'idea più precisa del conivolgimento del proprio figlio all'interno del percorso di apprendimento.
+
+\medskip
+\begin{flushright}
+Il tutor\\
+\emph{Emanuele Nardi}
+\end{flushright}
+
+\clearpage
+\section*{Aprile 2019}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{} l *{7}{c} @{}}
+	\toprule
+		\multirow{2}{*}{Aprile} & \multicolumn{7}{c}{Presenze} \\
+	\cmidrule(l){2-8}
+		& \Numero{2019-04-08} & \Numero{2019-04-12} & \Numero{2019-04-15} & \Numero{2019-04-19} & \Numero{2019-04-22} & \Numero{2019-04-26} & \Numero{2019-04-29} \\
+	\midrule
+		Alan & \Assente & \Presente & \Assente & \Festa & \Festa & \Festa & \Assente \\
+		Francesko & \Presente & \Presente & \Assente & \Festa & \Festa & \Festa & \Presente \\
+		Michele & \Presente & \Presente & \Assente & \Festa & \Festa & \Festa & \Assente \\
+		Nicholas & \Presente & \Presente & \Presente & \Festa & \Festa & \Festa & \Presente \\
+	\bottomrule
+\end{tabular}
+\end{table}
+\bigskip
+
+\subsection*{Settimana 8 -- 13 aprile}
+
+\begin{lezione}
+	{2019-04-08}
+	{09:00:00}{12:00:00}
+	{Fondamenti di Unix}
+
+\begin{itemize}
+	\item impostato un luogo di sviluppo comune su Windows. Installando Atom come editor di testo e la WSL (\emph{Windows Subsystem for Linux}) per la compilazione come su macchine Unix;
+	\item imparato a
+	\begin{enumerate*}
+		\item sapere qual è l'utente loggato (\texttt{whoami});
+		\item stampare la cartella corrente (\texttt{pwd});
+		\item navigare fra le cartelle (\texttt{cd});
+		\item creare cartelle (\texttt{mkdir});
+		\item creare file (\texttt{touch});
+		\item spostare e rinominare file (\texttt{mv});
+		\item rendere eseguire un file (\texttt{chmod +x})
+	\end{enumerate*} tramite i comandi da terminale
+	\item imparato a scrivere uno script per eseguire codice a scelta (file \texttt{compile.sh});
+	\item ripassato la procedura per compilare i file in linguaggio {\Cpp} (tramite \texttt{g++} e WSL);
+\end{itemize}
+
+\paragraph{Diario dell'insegnante}
+Gli studenti sono stati molto reattivi durante gli esercizi di pratica e attenti durante la spiegazione teorica.
+Mentre hanno dimostrato facilmente di distrarsi durante i tempi morti.
+
+\studente{Michele}
+Risulta comprendere con relativa facilità le nozioni; pone domande per chiedere precisazioni sull'argomento.
+
+\studente{Nicholas}
+Presenta delle difficoltà nell'esprimere concetti difficili in modo conciso.
+
+\studente{Francesko}
+Non è intervenuto molto in questa lezione.
+La prossima lezione non si deve sedere vicino a Nicholas (si distraggono a vicenda).
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-04-12}
+	{09:00:00}{12:00:00}
+	{Fondamenti di \Cpp}
+
+\begin{itemize}
+	\item Lezione ``concetti elementari'';
+	\item Lezione ``variabili, costanti, tipi'';
+	\item Lezione ``variabili e costanti''.
+\end{itemize}
+
+\paragraph{Diario dell'insegnante}
+
+La classe era evidentemente annoiata dal comportamento di Alan per l'intera durata della lezione frontale.
+
+\studente{Alan}
+Ha avuto un comportamente scontroso ed interveniva senza essere interpellato.
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-04-15}
+	{09:00:00}{12:00:00}
+	{Istruzioni di \Cpp}
+
+\begin{itemize}
+	\item Lezione ``istruzioni'';
+	\begin{itemize}
+		\item \texttt{if-then}, \texttt{if-then-else}, \texttt{switch}, \texttt{while}, \texttt{do-while}, \texttt{for};
+		\item \texttt{continue}, \texttt{break}, \texttt{goto}
+	\end{itemize}
+\end{itemize}
+
+\paragraph{Diario dell'insegnante}
+Data l'assenza della maggior parte della classe la lezione è finita prima del previsto, lasciando così il tempo alla visione degli esercizi.
+
+\studente{Nicholas}
+\'E stato attento durante la lezione ed ha eseguito gli esercizi quando richiesto.
+Ha mostrato interesse per la materia.
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-04-29}
+	{09:00:00}{12:00:00}
+	{Puntatori e Riferimenti}
+
+\begin{itemize}
+	\item Lezione ``puntatori riferimenti'';
+	\begin{itemize}
+		\item Il tipo ``riferimento a'', vincoli sull'uso dei riferimenti;
+		\item L'operatore address-of ``\texttt{\&}'';
+		\item Il tipo ``puntatore a'';
+		\item L'operatore di dereference ``\texttt{*}'';
+		\item Assegnazione fra puntatori.
+	\end{itemize}
+\end{itemize}
+
+\paragraph{Diario dell'insegnante}
+Nella prima ora abbiamo ripassato il programma svolto nell'ultima lezione, data l'assenza della maggior parte degli studenti.
+Nelle due ore successive abbiamo svolto un'alternanza fra lezione frontale ed esercitazione, svolgendo gli esercizi in modo guidato.
+
+\studente{Nicholas}
+Inizia a prendere confidenza con la materia e dimostra sicurezza nel dare le risposte.
+
+\studente{Francesko}
+Non era in grado di svolgere gli esercizi, ha bisogno di applicarsi.
+
+\end{lezione}
+
+
+\clearpage
+\section*{Maggio 2019}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{} l *{9}{c} @{}}
+	\toprule
+		\multirow{2}{*}{Maggio} & \multicolumn{9}{c}{Presenze} \\
+	\cmidrule(l){2-10}
+		& \Numero{2019-05-03} & \Numero{2019-05-6} & \Numero{2019-05-10} & \Numero{2019-05-13} & \Numero{2019-05-17} & \Numero{2019-05-20} & \Numero{2019-05-24} & \Numero{2019-05-27} & \Numero{2019-05-31} \\
+	\midrule
+		Alan & \Assente & \Null & \Null & \Null & \Null & \Null & \Null  & \Null & \Null \\
+		Francesko & \Presente & \Null & \Null & \Null & \Null & \Null & \Null  & \Null & \Null \\
+		Michele & \Assente & \Null & \Null & \Null & \Null & \Null & \Null  & \Null & \Null \\
+		Nicholas & \Assente & \Null & \Null & \Null & \Null & \Null & \Null  & \Null & \Null \\
+	\bottomrule
+\end{tabular}
+\end{table}
+\bigskip
+
+\end{document}

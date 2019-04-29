@@ -1,0 +1,106 @@
+\documentclass[12pt]{beamer}
+\setbeamercovered{transparent}
+\setbeamercolor{alerted text}{fg=orange}
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{slides.preamble}
+
+% \usepackage{tikz}
+% \usepackage{pgfpages}
+% \pgfpagesuselayout{8 on 1}[a4paper, border shrink=5mm]
+% \setbeamertemplate{background canvas}{
+% 	\tikz \draw (current page.north west) rectangle (current page.south east);
+% }
+
+% NOTE informazioni incluse nella pagina del titolo
+\title{Pillole di {\javalogo}}
+\subtitle{(con un po' di zucchero)}
+% \title{Pillole di {\javalogo}\\[5pt]\small(con un po' di zucchero)}
+\author{Emanuele Nardi}
+\institute{Grandi Scuole}
+\date{\today}
+
+\includeonlyframes{%
+	title,%
+	hello-world,%
+	definition-italian%
+}
+
+% arara: xelatex: { shell: yes }
+%! arara: xelatex: { shell: yes }
+% NOTE non cancellare fls - è un file audio
+% arara: clean: { extensions: [nav, snm, xdv, vrb] }
+% arara: latexmk: { clean: partial }
+\begin{document}
+
+\begin{frame}[label=title]
+\maketitle
+\end{frame}
+
+\begin{frame}[fragile, label=hello-world]
+\javafile{assets/codes/java/HelloWorld.java}
+
+\begin{uncoverenv}<+(1)->
+\vfill
+\begin{minted}[frame=none, fontsize=\footnotesize]{bash}
+javac FirstJavaProgram.java
+\end{minted}
+\end{uncoverenv}
+
+\uncover<+(1)-3>{
+\begin{itemize}
+	\item \href{https://www.fabriziorocca.it/guide/come-risolvere-il-problema-di-javac-non-riconosciuto-come-comando/}{``javac'' non è riconosciuto come comando}
+\end{itemize}
+}
+\begin{uncoverenv}<+-3>
+\begin{minted}[frame=none, fontsize=\footnotesize]{bash}
+set path=C:/Program Files/Java/jdk1.8.0_<versione>/bin
+\end{minted}
+\end{uncoverenv}
+
+\begin{uncoverenv}<+->
+\begin{minted}[frame=none, fontsize=\footnotesize]{bash}
+java FirstJavaProgram
+\end{minted}
+\end{uncoverenv}
+
+\end{frame}
+
+\begin{frame}[label=definition-italian, fragile]
+\frametitle{Definizione di Java}
+\only<0->{
+In informatica {\java} è un linguaggio di programmazione \alert<2>{\textbf{ad alto livello}}, \alert<3>{\textbf{orientato agli oggetti}} e a \alert<4->{\textbf{tipizzazione statica}}.\\[10pt]%
+}
+
+\only<+>{%
+Si appoggia sull'omonima piattaforma software, specificamente progettato per essere il più possibile \textbf{indipendente dalla piattaforma hardware di esecuzione} (tramite compilazione in bytecode prima e interpretazione poi da parte di una JVM).
+\source{Wikipedia (in italiano)}{https://it.wikipedia.org/wiki/Java_(linguaggio_di_programmazione)}
+}
+
+\only<+>{%
+Un linguaggio di programmazione ad alto livello è un linguaggio di programmazione caratterizzato da una \alert{significativa astrazione} dai dettagli del funzionamento di un calcolatore e dalle caratteristiche del linguaggio macchina.%
+\vfill
+}%
+
+\only<+>{%
+In informatica la programmazione orientata agli oggetti (OOP, Object Oriented Programming) è un \alert{paradigma di programmazione} che \emph{permette di definire oggetti software in grado di interagire gli uni con gli altri} attraverso lo scambio di messaggi.%
+\vfill
+}%
+
+\only<+>{%
+La tipizzazione statica è una \alert{particolare politica di tipizzazione}, ovvero di assegnazione di tipi alle variabili.\\[5pt]%
+Nei linguaggi a tipizzazione statica, \alert{il tipo di ogni variabile viene stabilito direttamente nel codice sorgente} dove viene assegnato esplicitamente per mezzo di parole chiave apposite, come ad esempio \texttt{int}, \texttt{long}, \texttt{float}, \texttt{char}
+\vfill
+}%
+
+\only<+->{%
+\javafile{assets/codes/java/EsempioTipizzazione.java}
+\vfill
+\only<+>{
+Avviene un errore \textbf{in fase di compilazione}
+}
+}
+
+\end{frame}
+
+\end{document}

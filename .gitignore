@@ -24,7 +24,7 @@ notes/
 rseba/
 
 # file sorgenti
-*.tex
+# *.tex
 
 # file java compilati
 *.class
