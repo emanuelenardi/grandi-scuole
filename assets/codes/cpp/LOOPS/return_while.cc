@@ -1,5 +1,5 @@
-using namespace std;
 #include <iostream>
+using std::cout;
 
 int main () {
 	int a, b;
@@ -8,9 +8,9 @@ int main () {
 	while (1) {
 		cout << "Inserisci due numeri: ";
 		cin >> a >> b;
-		
+
 		cout << a << '+' << b << '=' << a+b << '\n';
-		
+
 		cout << "Vuoi continuare (s/n)? ";
 		cin >> c;
 

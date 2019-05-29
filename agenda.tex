@@ -1,4 +1,9 @@
-\documentclass{tufte-book}
+\documentclass[twoside, symmetric]{tufte-book}
+% \documentclass[gray]{tufte-book}
+% NOTE these two lines resolves the "too many unprocessed floats" error.
+\geometry{bottom=3cm}
+\usepackage{morefloats}
+
 \usepackage{comment}
 \usepackage{xparse}
 
@@ -13,20 +18,37 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{array}
-\usepackage{
-	,mparhack
-	,marginfix
+\usepackage{mparhack, marginfix}
+
+\usepackage{afterpage}
+\newcommand{\blankpage}{%
+	\clearpage%
+	\begingroup%
+		\thispagestyle{empty}%
+		\addtocounter{page}{-1}%
+		\vspace*{\stretch{4}}%
+		\centering%
+		% Questa pagina è stata lasciata vuota intenzionalmente%
+		\vspace*{\stretch{1}}%
+		\clearpage%
+    \endgroup%
 }
 
 \usepackage[inline]{enumitem}
 \usepackage{amssymb}
-\newlist{todolist}{itemize}{2}
-\setlist[todolist]{label=\(\square\)}
-\NewDocumentCommand{\cmark}{}{\ding{51}}%
-\NewDocumentCommand{\xmark}{}{\ding{55}}%
-\NewDocumentCommand{\done}{}{\rlap{\(\square\)}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
-\hspace{-2.5pt}}
-\NewDocumentCommand{\notdone}{}{\rlap{\(\square\)}{\large\hspace{1pt}\xmark}}
+\NewDocumentCommand{\cmark}{}{\ding{51}}
+\NewDocumentCommand{\xmark}{}{\ding{55}}
+
+% \newlist{todolist}{itemize}{2}
+% \setlist[todolist]{label=\(\square\)}
+% \NewDocumentCommand{\done}{}{\rlap{\(\square\)}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
+% \hspace{-2.5pt}}
+% \NewDocumentCommand{\notdone}{}{\rlap{\(\square\)}{\large\hspace{1pt}\xmark}}
+
+\usepackage{menukeys}
+% NOTE ridefinizione del simbolo per indicare i sottomenù
+\newmenustylesimple*{arrows}{\CurrentMenuElement}[ \(\rightarrow\) ]{blacknwhite}
+\AtBeginDocument{\renewmenumacro{\menu}[>]{arrows}}
 
 \usepackage{pifont}
 \NewDocumentCommand{\Presente}{}{\textcolor{ForestGreen}{\cmark}}
@@ -35,6 +57,15 @@
 \NewDocumentCommand{\Null}{}{-}
 
 % https://tex.stackexchange.com/questions/477319/
+\DTMnewdatestyle{giorno-numero-mese}{%
+	\renewcommand{\DTMdisplaydate}[4]{%
+		\DTMweekdayname{##4}\space%  weekday
+		\number##3\nobreakspace%     day
+		\DTMmonthname{##2}%         (full) Month
+	}%
+	\renewcommand{\DTMDisplaydate}{\DTMdisplaydate}%
+}
+
 \DTMnewdatestyle{giorno-numero}{%
 	\renewcommand{\DTMdisplaydate}[4]{%
 		\DTMweekdayname{##4}\space% weekday
@@ -50,6 +81,11 @@
 	\renewcommand{\DTMDisplaydate}{\DTMdisplaydate}%
 }
 
+\NewDocumentCommand{\Data}{m}{%
+	\DTMsetdatestyle{giorno-numero-mese}%
+	\DTMdate{#1}%
+}
+
 \NewDocumentCommand{\Giorno}{m}{%
 	\DTMsetdatestyle{giorno-numero}%
 	\DTMdate{#1}%
@@ -61,16 +97,16 @@
 }
 
 \NewDocumentEnvironment{lezione}{mmmm}{
-	\subsection{\textbf{#4}}%
-	\marginnote{\Giorno{#1}}%
+	\subsection{\textbf{#4}}
+	\marginnote{\Data{#1}}%\Giorno{#1}
 	\marginnote{\DTMtime{#2} -- \DTMtime{#3}}%
 }{
-	\vspace{0.5cm}
+	% \vspace{1em}
 }
 
-\NewDocumentCommand{\studente}{m}{%
-	\paragraph{#1}%
-}
+% \NewDocumentCommand{\studente}{m}{%
+% 	\paragraph{#1}%
+% }
 
 \NewDocumentEnvironment{compiti}{}{%
 	\begin{todolist}\footnotesize
@@ -79,9 +115,6 @@
 }
 
 \NewDocumentCommand{\Cpp}{}{C\texttt{++}}
-
-\AtBeginDocument{\maketitle}
-% \AtEndDocument{Continua\dots}
 
 \title{Diario delle lezioni}
 \author{Emanuele Nardi}
@@ -93,43 +126,108 @@
 % arara: clean: { extensions: [bbl, synctex.gz] }
 \begin{document}
 
+\maketitle
+\blankpage
+
 \section{Introduzione}
 
-All'inizio di ogni mese è presente una tabella riassuntiva delle presenze dello studente.
+Per ogni lezione sono espresse in maniera sintetica i punti salienti di ogni lezione.%, per leggere una traccia gli argomenti trattati consultare la dispensa.
 
 \medskip
-Per ogni lezione sono espresse in maniera sintetica i punti salienti di ogni lezione, per approfondire gli argomenti trattati leggere la dispensa delle lezioni.
-
-\medskip
-Il diario dell'insegnante è un diario dove l'insegnante registra lo svolgimento della lezione ed esprime le sue riflessioni su di essa. \'{E} utilizzato come \emph{strumento di sviluppo}. Leggendola il genitore può farsi un'idea più precisa del conivolgimento del proprio figlio all'interno del percorso di apprendimento.
+Il diario dell'insegnante è un diario dove l'insegnante registra lo svolgimento della lezione ed esprime le sue riflessioni su di essa. \'{E} utilizzato come \emph{strumento di sviluppo}. Leggendola il genitore può farsi un'idea più precisa del coinvolgimento del proprio figlio all'interno del percorso di apprendimento.
 
 \medskip
 \begin{flushright}
 Il tutor\\
 \emph{Emanuele Nardi}
 \end{flushright}
-
+\afterpage{\blankpage}
 \clearpage
-\section*{Aprile 2019}
+
+\section*{Tabelle riassuntive presenze}
+
+Per ogni giorno di lezione è segnata la presenza (\Presente{}), l'assenza (\Assente{}) e giorno di festività/ponte (\Festa{}).
+Alla destra del grafico sono indicate la somma delle ore in cui lo studente era presente o assente rispettivamente.
+Infine è indicata una percentuale delle ore di presenza.
+Nel caso siano presenti più spunti sta a significare che in quella data si sono svolte più lezioni (mattina e pomeriggio ad esempio).
 
 \begin{table}[h]
-\centering
-\begin{tabular}{@{} l *{7}{c} @{}}
+\raggedright
+\begin{tabular}{@{} l *{10}{c} @{}}
 	\toprule
-		\multirow{2}{*}{Aprile} & \multicolumn{7}{c}{Presenze} \\
-	\cmidrule(l){2-8}
-		& \Numero{2019-04-08} & \Numero{2019-04-12} & \Numero{2019-04-15} & \Numero{2019-04-19} & \Numero{2019-04-22} & \Numero{2019-04-26} & \Numero{2019-04-29} \\
-	\midrule
-		Alan & \Assente & \Presente & \Assente & \Festa & \Festa & \Festa & \Assente \\
-		Francesko & \Presente & \Presente & \Assente & \Festa & \Festa & \Festa & \Presente \\
-		Michele & \Presente & \Presente & \Assente & \Festa & \Festa & \Festa & \Assente \\
-		Nicholas & \Presente & \Presente & \Presente & \Festa & \Festa & \Festa & \Presente \\
+		\multirow{2}{*}{Aprile} & \multicolumn{9}{c}{Presenze} \\
+	\cmidrule(l){2-11}
+		& \Numero{2019-04-08}
+		& \Numero{2019-04-12}
+		& \Numero{2019-04-15}
+		& \Numero{2019-04-19}
+		& \Numero{2019-04-22}
+		& \Numero{2019-04-26}
+		& \Numero{2019-04-29}
+		& \Presente & \Assente & \% \\
+	\cmidrule(r){0-7}
+	\cmidrule(l){9-11}
+		Condini M. & \Presente & \Presente & \Assente & \Festa & \Festa & \Festa & \Assente & 6 & 6 & 50 \\
+		Ferreira A. & \Assente & \Presente & \Assente & \Festa & \Festa & \Festa & \Assente & 9 & 3 & 25 \\
+		Malfatti N. & \Presente & \Presente & \Presente & \Festa & \Festa & \Festa & \Presente & 12 & 12 & 100 \\
+		Rama F. & \Presente & \Presente & \Assente & \Festa & \Festa & \Festa & \Presente & 9 & 3 & 75 \\
 	\bottomrule
 \end{tabular}
 \end{table}
 \bigskip
 
-\subsection*{Settimana 8 -- 13 aprile}
+\begin{table}[h]
+\raggedright
+\begin{tabular}{@{} l *{15}{c} @{}}
+	\toprule
+		\multirow{2}{*}{Maggio} & \multicolumn{14}{c}{Presenze} \\
+	\cmidrule(l){2-16}
+		& \Numero{2019-05-03}
+		& \Numero{2019-05-06}
+		& \Numero{2019-05-10}
+		& \Numero{2019-05-13}
+		& \Numero{2019-05-17}
+		& \Numero{2019-05-18}
+		& \Numero{2019-05-20}
+		& \Numero{2019-05-24}
+		& \Numero{2019-05-25}
+		& \Numero{2019-05-27}
+		& \Numero{2019-05-28}
+		& \Numero{2019-05-31}
+		& \Presente & \Assente & \% \\
+	\cmidrule(r){0-12}
+	\cmidrule(l){14-16}
+		Condini M. & \Assente & \Assente & \Assente & \Assente & \Assente & \Assente & \Assente  & \Assente & \Assente & \Assente & \Assente & \Assente\Assente & 0 & 39 & 0 \\
+		Ferreira A. & \Presente & \Assente & \Assente & \Assente & \Assente & \Assente & \Presente & \Assente & \Assente & \Assente & \Assente & \Assente\Assente & 6 & 33 & 15 \\
+		Malfatti N. & \Assente & \Assente & \Presente & \Presente & \Presente & \Presente & \Presente & \Presente & \Presente & \Presente & \Presente & \Presente\Presente & 33 & 6 & 85 \\
+		Rama F. & \Presente & \Presente & \Presente & \Assente & \Presente & \Presente & \Presente  & \Presente & \Presente & \Presente & \Presente & \Presente\Presente & 36 & 3 & 92 \\
+	\bottomrule
+\end{tabular}
+\end{table}
+\bigskip
+
+\begin{table}[h]
+\raggedright
+\begin{tabular}{@{} l *{6}{c} @{}}
+	\toprule
+		\multirow{2}{*}{Giugno} & \multicolumn{4}{c}{Presenze} \\
+	\cmidrule(l){2-7}
+		& \Numero{2019-06-03}
+		& \Numero{2019-06-04}
+		& \Numero{2019-06-05}
+		& \Presente & \Assente & \% \\
+	\cmidrule(r){0-3}
+	\cmidrule(l){5-7}
+		Condini M. & \Null & \Null & \Null & 0 & 0 & 0 \\
+		Ferreira A. & \Null & \Null & \Null & 0 & 0 & 0 \\
+		Malfatti N. & \Null & \Null & \Null & 0 & 0 & 0 \\
+		Rama F. & \Null & \Null & \Null & 0 & 0 & 0 \\
+	\bottomrule
+\end{tabular}
+\end{table}
+\bigskip
+
+\section*{Aprile 2019}
 
 \begin{lezione}
 	{2019-04-08}
@@ -146,7 +244,7 @@ Il tutor\\
 		\item creare cartelle (\texttt{mkdir});
 		\item creare file (\texttt{touch});
 		\item spostare e rinominare file (\texttt{mv});
-		\item rendere eseguire un file (\texttt{chmod +x})
+		\item rendere eseguibile un file (\texttt{chmod +x})
 	\end{enumerate*} tramite i comandi da terminale
 	\item imparato a scrivere uno script per eseguire codice a scelta (file \texttt{compile.sh});
 	\item ripassato la procedura per compilare i file in linguaggio {\Cpp} (tramite \texttt{g++} e WSL);
@@ -156,15 +254,14 @@ Il tutor\\
 Gli studenti sono stati molto reattivi durante gli esercizi di pratica e attenti durante la spiegazione teorica.
 Mentre hanno dimostrato facilmente di distrarsi durante i tempi morti.
 
-\studente{Michele}
-Risulta comprendere con relativa facilità le nozioni; pone domande per chiedere precisazioni sull'argomento.
-
-\studente{Nicholas}
-Presenta delle difficoltà nell'esprimere concetti difficili in modo conciso.
-
-\studente{Francesko}
-Non è intervenuto molto in questa lezione.
-La prossima lezione non si deve sedere vicino a Nicholas (si distraggono a vicenda).
+% \studente{Michele}
+% Risulta comprendere con relativa facilità le nozioni; pone domande per chiedere precisazioni sull'argomento.
+%
+% \studente{Nicholas}
+% Presenta delle difficoltà nell'esprimere concetti difficili in modo conciso.
+%
+% \studente{Francesko}
+% Non è intervenuto molto in questa lezione.
 
 \end{lezione}
 
@@ -180,11 +277,10 @@ La prossima lezione non si deve sedere vicino a Nicholas (si distraggono a vicen
 \end{itemize}
 
 \paragraph{Diario dell'insegnante}
-
 La classe era evidentemente annoiata dal comportamento di Alan per l'intera durata della lezione frontale.
 
-\studente{Alan}
-Ha avuto un comportamente scontroso ed interveniva senza essere interpellato.
+% \studente{Alan}
+% Ha avuto un comportamente scontroso ed interveniva senza essere interpellato.
 
 \end{lezione}
 
@@ -204,9 +300,9 @@ Ha avuto un comportamente scontroso ed interveniva senza essere interpellato.
 \paragraph{Diario dell'insegnante}
 Data l'assenza della maggior parte della classe la lezione è finita prima del previsto, lasciando così il tempo alla visione degli esercizi.
 
-\studente{Nicholas}
-\'E stato attento durante la lezione ed ha eseguito gli esercizi quando richiesto.
-Ha mostrato interesse per la materia.
+% \studente{Nicholas}
+% \'E stato attento durante la lezione ed ha eseguito gli esercizi quando richiesto.
+% Ha mostrato interesse per la materia.
 
 \end{lezione}
 
@@ -227,36 +323,238 @@ Ha mostrato interesse per la materia.
 \end{itemize}
 
 \paragraph{Diario dell'insegnante}
-Nella prima ora abbiamo ripassato il programma svolto nell'ultima lezione, data l'assenza della maggior parte degli studenti.
-Nelle due ore successive abbiamo svolto un'alternanza fra lezione frontale ed esercitazione, svolgendo gli esercizi in modo guidato.
+Nella prima ora abbiamo ripassato gli argomenti trattati nell'ultima lezione, data l'assenza della maggior parte degli studenti alla lezione precedente.
+Nelle due ore successive abbiamo svolto un'alternanza fra lezione frontale ed esercitazione, svolgendo gli esercizi proposti in modo guidato.
 
-\studente{Nicholas}
-Inizia a prendere confidenza con la materia e dimostra sicurezza nel dare le risposte.
-
-\studente{Francesko}
-Non era in grado di svolgere gli esercizi, ha bisogno di applicarsi.
+% \studente{Nicholas}
+% Inizia a prendere confidenza con la materia e dimostra sicurezza nel dare le risposte.
+%
+% \studente{Francesko}
+% Non era in grado di svolgere gli esercizi, ha bisogno di applicarsi.
 
 \end{lezione}
-
 
 \clearpage
 \section*{Maggio 2019}
 
-\begin{table}[h]
-\centering
-\begin{tabular}{@{} l *{9}{c} @{}}
-	\toprule
-		\multirow{2}{*}{Maggio} & \multicolumn{9}{c}{Presenze} \\
-	\cmidrule(l){2-10}
-		& \Numero{2019-05-03} & \Numero{2019-05-6} & \Numero{2019-05-10} & \Numero{2019-05-13} & \Numero{2019-05-17} & \Numero{2019-05-20} & \Numero{2019-05-24} & \Numero{2019-05-27} & \Numero{2019-05-31} \\
-	\midrule
-		Alan & \Assente & \Null & \Null & \Null & \Null & \Null & \Null  & \Null & \Null \\
-		Francesko & \Presente & \Null & \Null & \Null & \Null & \Null & \Null  & \Null & \Null \\
-		Michele & \Assente & \Null & \Null & \Null & \Null & \Null & \Null  & \Null & \Null \\
-		Nicholas & \Assente & \Null & \Null & \Null & \Null & \Null & \Null  & \Null & \Null \\
-	\bottomrule
-\end{tabular}
-\end{table}
-\bigskip
+\begin{lezione}
+	{2019-05-03}
+	{09:00:00}{12:00:00}
+	{Ripasso costrutti in C}
+
+Abbiamo effettuato un ripasso delle due lezioni precendenti.
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-06}
+	{09:30:00}{12:30:00}
+	{Funzioni in C -- parte 1}
+
+	\begin{itemize}
+		\item Lezione ``Funzioni'':
+		\begin{itemize}
+			\item Introduzione
+			\item Definizione, Dichiarazione e Chiamata di Funzioni
+		\end{itemize}
+	\end{itemize}
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-10}
+	{09:00:00}{12:00:00}
+	{Funzioni in C -- parte 2}
+
+	\begin{itemize}
+		\item Lezione  ``Funzioni''
+		\begin{itemize}
+			\item Parametri e variabili locali
+			\item Passaggio di parametri
+			\item Ricorsione
+		\end{itemize}
+	\end{itemize}
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-13}
+	{09:00:00}{12:00:00}
+	{Vettori in C}
+
+	\begin{itemize}
+		\item Lezione ``Array'':
+		\begin{itemize}
+			\item Definizione ed Utilizzo di Array
+			\item Array e Funzioni
+			\item Array ordinati
+			\item Array Multidimensionali
+			\item Array e puntatori
+		\end{itemize}
+		% \item Array, Puntatori e Funzioni
+	\end{itemize}
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-17}
+	{09:00:00}{12:00:00}
+	{Stringhe e I/O su file}
+
+	\begin{itemize}
+		\item Lezione ``Stringhe e File di testo'':
+		\begin{itemize}
+			\item Stringhe
+			\item Argomenti da linea di comando
+		\end{itemize}
+	\end{itemize}
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-18}
+	{09:00:00}{12:00:00}
+	{Le Strutture}
+
+	\begin{itemize}
+		\item Lezione ``Stringhe e File di testo'':
+		\begin{itemize}
+			\item I/O con file di testo
+		\end{itemize}
+
+		\item Lezione ``Le Strutture'':
+		\begin{itemize}
+			\item Le Strutture
+			\item Le operazioni sulle strutture
+		\end{itemize}
+	\end{itemize}
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-20}
+	{09:00:00}{12:00:00}
+	{Modularità del codice e Strutture Dati}
+
+	\begin{itemize}
+		\item Lezione ``Le Strutture'':
+		\begin{itemize}
+			\item Le Strutture ricorsive
+			\item Array ordinati di strutture
+		\end{itemize}
+		\item Lezione ``La modularità'':
+		\begin{itemize}
+			\item Modello di gestione della memoria di un programma
+			\item Programmazione su file multipli
+		\end{itemize}
+		\item Lezione ``Le Strutture Dati'':
+		\begin{itemize}
+			\item Tipo di dato astratto (Array, Liste concatenate, Grafi
+			\item Realizzazione di Pila, Coda, Alberi Binari
+		\end{itemize}
+	\end{itemize}
+
+\end{lezione}
+
+\begin{lezione}
+ 	{2019-05-24}
+ 	{09:00:00}{12:00:00}
+ 	{Introduzione a Java}
+
+	\begin{itemize}
+		\item Differenze e somiglianze con la programmazione in C:
+		\begin{enumerate*}[label={\arabic*.}]
+			\item stampa (\texttt{sout})
+			\item dichiarazione di variabili
+			\item caratteri di escape (\texttt{\textbackslash{}n}, \texttt{\textbackslash{}t})
+			\item dichiarazione degli array
+			\item gestione della memoria dinamica, casting.
+		\end{enumerate*}
+		\item Concetto di oggetto, classe e istanza;
+		\item Indicazioni di risorse per lo studio individuale.
+	\end{itemize}
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-25}
+	{09:00:00}{12:00:00}
+	{Familiarizzazione con l'ambiente di lavoro}
+
+Esplorazione delle funzionalità di NetBeans:
+\begin{enumerate*}[label={\arabic*.}]
+	\item cerca nel file (\texttt{ctrl\,+\,F})
+	\item genera codice (\texttt{alt\,+\,insert})
+	\item correggi tutte le importazioni di classe (\texttt{ctrl\,+\,shift\,+\,I})
+	\item esegui progetto (\texttt{F6}, build + compile)
+	\item formattazione del codice (\texttt{ctrl\,+\,shift\,+\,F})
+	\item copia linea sopra/sotto (\texttt{ctrl\,+\,shift\,+ \arrowkeyup{} / \arrowkeydown{}} )
+\end{enumerate*}
+
+Scrittura veloce del codice tramite utilizzo di scorciatoie:
+\begin{enumerate*}[label={\arabic*.}]
+	\item \texttt{St} (String)
+	\item \texttt{bo} (boolean)
+	% \item \texttt{cl} (class)
+	\item \texttt{do} (do-while)
+	\item \texttt{for} (for)
+	\item \texttt{fore} (foreach)
+	\item \texttt{if}, \texttt{ifelse}
+	% \item \texttt{im} (implements)
+	% \item \texttt{pe} (protected)
+	\item \texttt{pr} (private)
+	\item \texttt{pu} (public)
+	\item \texttt{re} (return)
+	\item \texttt{sout} (print)
+	\item \texttt{sw} (switch)
+	\item \texttt{wh} (while).
+\end{enumerate*}
+
+Scrivere e produrre la documentazione del codice tramite \texttt{javadoc} \menu{Run > Generate Javadoc}.
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-27}
+	{13:00:00}{16:00:00}
+	{Stringhe e Vettori}
+
+\texttt{String}, \texttt{StringBuilder}, Vettori.
+Laboratorio.
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-28}
+	{09:00:00}{12:00:00}
+	{Funzioni e input}
+
+Definizione di funzioni e input da terminale e da interfaccia grafica.
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-31}
+	{09:00:00}{12:00:00}
+	{Programmazione ad oggetti}
+
+Scrittura di un diagramma UML.
+Scrittura di classi: definizione dei costruttori.
+Creazione degli oggetti: istanziare un oggetto, richiamarne i suoi metodi.
+% Utilizzo delle interfacce.
+
+\end{lezione}
+
+\begin{lezione}
+	{2019-05-31}
+	{13:00:00}{16:00:00}
+	{Ereditarietà, interfacce e poliformismo}
+
+Da definire.
+
+\end{lezione}
+
+\clearpage
+\section*{Giugno 2019}
 
 \end{document}

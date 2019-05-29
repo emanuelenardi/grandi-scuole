@@ -1,5 +1,8 @@
-using namespace std;
 #include <iostream>
+
+using std::cin;
+using std::cout;
+
 int main() {
 	// semplice calcolatrice
 	double op1, op2;

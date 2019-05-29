@@ -5,6 +5,10 @@
 *.toc
 *.bbl
 *.blg
+*.xdv
+*.nav
+*.vrb
+*.snm
 *.out
 
 ## Build tool auxiliary files:
@@ -21,10 +25,16 @@ _minted*
 # materiale sensibile
 images/
 notes/
-rseba/
+material/
+programs/
+students/
 
 # file sorgenti
+# *.sty
 # *.tex
 
 # file java compilati
 *.class
+
+dispensa*
+slides*

@@ -3,7 +3,7 @@
 //  Copyright McGraw-Hill, 1996
 
 #include <iostream>
-using namespace std;
+using std::cout;
 
 int main () {
 	int n = 10;

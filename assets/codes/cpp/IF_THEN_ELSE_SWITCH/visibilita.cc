@@ -1,5 +1,7 @@
-using namespace std;
 #include <iostream>
+
+using std::cin;
+using std::cout;
 
 int n = 33; // variabile globale
 

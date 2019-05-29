@@ -1,12 +1,11 @@
 #include <iostream>
-using namespace std;
-
+using std::cout;
 
 int main () {
 	int x;
-	int * px = &x;
+	int *px = &x;
 	long double y;
-	long double * py = &y, *pypiudue;
+	long double *py = &y, *pypiudue;
 
 	cout << "Size(int) = " << sizeof(int) << endl;
 	cout << "Address(x) = " << (long) &x << endl;

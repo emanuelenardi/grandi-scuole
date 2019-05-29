@@ -1,5 +1,5 @@
 #include <iostream>
-using namespace std;
+using std::cout;
 
 int main () {
 
@@ -12,6 +12,6 @@ int main () {
 
 	// quanto vale x?
 	cout << "x = " << x << endl;
-	
+
 	return 0;
 }

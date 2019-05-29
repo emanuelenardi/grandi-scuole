@@ -1,5 +1,7 @@
-using namespace std;
 #include <iostream>
+
+using std::cin;
+using std::cout;
 
 // calcolo soluzioni di ax + b = 0
 

@@ -1,7 +1,5 @@
-// ESEMPIO DI COSTANTE PUNTATORE
-
 #include <iostream>
-using namespace std;
+using std::cout;
 
 int main () {
 	int a, b;

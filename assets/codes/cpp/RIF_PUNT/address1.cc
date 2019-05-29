@@ -1,5 +1,5 @@
 #include <iostream>
-using namespace std;
+using std::cout;
 
 int main () {
 	int l = 12;
@@ -14,9 +14,9 @@ int main () {
 	cout << "&m = " << &m << endl;  //  print the address of m
 	cout << "&n = " << &n << endl;  //  print the address of n
 
-	// cout << "&l = " << long(&l) << endl;  // print the address of l, decimal
-	// cout << "&m = " << long(&m) << endl;  // print the address of m, decimal
-	// cout << "&n = " << long(&n) << endl;  // print the address of n, decimal
+	cout << "&l = " << long(&l) << endl;  // print the address of l, decimal
+	cout << "&m = " << long(&m) << endl;  // print the address of m, decimal
+	cout << "&n = " << long(&n) << endl;  // print the address of n, decimal
 
 	// cout << "&l = " << &(l*5) << endl;  //  errore!
 
